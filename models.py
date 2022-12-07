@@ -15,7 +15,7 @@ class User(db.Model):
 
     __tablename__ = "Users"
 
-    id = db.Column(db.Ineger,
+    id = db.Column(db.Integer,
          primary_key=True,
          autoincrement=True)
     first_name = db.Column(db.String(100), nullable=False)
