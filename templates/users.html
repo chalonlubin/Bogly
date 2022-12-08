@@ -10,15 +10,15 @@
 <ul>
   {% for user in users %}
   <li class="mb-2">
-    <a href="#">
+    <a href="/users/{{ user.id }}">
       {{ user.first_name }} {{ user.last_name }}
-      <img src="{{ user.image_url }}" class="ms-2" alt="profile image" height="50" width="50">
+      <img src="{{ user.image_url }}" class="ms-2" alt="profile image" height="100" width="100">
     </a>
 
   </li>
   {% endfor %}
 </ul>
 
-<a class="btn btn-secondary" href="/add-user">Add user</a>
+<a class="btn btn-secondary" href="/users/new">Add user</a>
 
 {% endblock content %}
