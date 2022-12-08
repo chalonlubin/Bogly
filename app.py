@@ -16,16 +16,16 @@ connect_db(app)
 db.create_all()
 
 # Seed
-# danny = User(first_name="Daniel", last_name="Zeljko")
-# chalon = User(first_name="Chalon", last_name="Lubin")
-# db.session.add(danny, chalon)
-# db.session.commit()
+danny = User(first_name="Daniel", last_name="Zeljko")
+chalon = User(first_name="Chalon", last_name="Lubin")
+db.session.add_all([danny, chalon])
+db.session.commit()
 
-# post1 = Post(title="My first post", content="Hello", user_id=danny.id)
-# post2 = Post(title="My second post", content="123", user_id=danny.id)
-# post3 = Post(title="My first post", content="4444", user_id=chalon.id)
-# db.session.add(post1, post2, post3)
-# db.session.commit()
+post1 = Post(title="My first post", content="Hello", user_id=1)
+post2 = Post(title="My second post", content="123", user_id=1)
+post3 = Post(title="My first post", content="4444", user_id=2)
+db.session.add_all([post1, post2, post3])
+db.session.commit()
 
 
 @app.get("/")
