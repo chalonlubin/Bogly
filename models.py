@@ -29,6 +29,9 @@ class User(db.Model):
     def __repr__(self):
         return f"<User {self.first_name} {self.last_name} id={self.id}>"
 
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
 
 class Post(db.Model):
     """Post"""

@@ -17,4 +17,14 @@
     class="btn btn-danger">Delete</button>
 </form>
 
+<h2 class="my-2">Posts</h2>
+
+<ul>
+  {% for post in user.posts %}
+  <li><a href="#">{{ post.title }}</a></li>
+  {% endfor %}
+</ul>
+
+<a href="/users/{{user.id}}/posts/new" class="btn btn-primary">Add Post</a>
+
 {% endblock content %}

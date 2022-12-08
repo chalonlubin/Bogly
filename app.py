@@ -16,16 +16,16 @@ connect_db(app)
 db.create_all()
 
 # Seed
-danny = User(first_name="Daniel", last_name="Zeljko")
-chalon = User(first_name="Chalon", last_name="Lubin")
-db.session.add_all([danny, chalon])
-db.session.commit()
+# danny = User(first_name="Daniel", last_name="Zeljko")
+# chalon = User(first_name="Chalon", last_name="Lubin")
+# db.session.add_all([danny, chalon])
+# db.session.commit()
 
-post1 = Post(title="My first post", content="Hello", user_id=1)
-post2 = Post(title="My second post", content="123", user_id=1)
-post3 = Post(title="My first post", content="4444", user_id=2)
-db.session.add_all([post1, post2, post3])
-db.session.commit()
+# post1 = Post(title="My first post", content="Hello", user_id=1)
+# post2 = Post(title="My second post", content="123", user_id=1)
+# post3 = Post(title="My first post", content="4444", user_id=2)
+# db.session.add_all([post1, post2, post3])
+# db.session.commit()
 
 
 @app.get("/")
@@ -107,41 +107,28 @@ def delete_user(id):
     db.session.commit()
     return redirect("/users")
 
-# TODO: Fix route
-# @app.post("/add-new-user")
-# def add_new_user():
-#     """ Add new user and route to homepage """
 
-#     first_name = request.form["firstName"]
-#     last_name = request.form["lastName"]
-#     img_url = request.form["image"]
+@app.route("/users/<id>/posts/new", methods=['GET', 'POST'])
+def add_post(id):
+    """
+    GET:    Show form to add a post for that user.
+    POST:   Handle add form; add post and redirect to the user detail page.
+    """
+    user = User.query.get_or_404(int(id))
 
-#     #TODO: make sure all these fields exist b4 image url
+    if request.method == "POST":
+        title = request.form["title"]
+        content = request.form["content"]
 
-#     new_user = User(
-#             first_name=first_name,
-#             last_name=last_name
-#         )
-#     if img_url:
-#         new_user.image_url=img_url
+        new_post = Post(
+            title=title,
+            content=content
+        )
+        new_post.user_id = user.id
+        db.session.add(new_post)
+        db.session.commit()
 
-    # db.session.add(new_user)
-    # db.session.commit()
+        return redirect(f"/users/{user.id}")
 
-#     return redirect("/")
-
-    # if img_url:
-    #     new_user = User(
-    #         first_name=first_name,
-    #         last_name=last_name,
-    #         image_url=img_url
-    #     )
-    # else:
-    #     new_user = User(
-    #         first_name=first_name,
-    #         last_name=last_name
-    #     )
-
-
-# TODO int conversion in decorator
-
+    else:
+        return render_template("add-post.html", user=user)
