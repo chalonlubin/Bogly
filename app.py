@@ -19,11 +19,6 @@ db.create_all()
 def home():
     """ Displays the Users on the homepage """
 
-    # just a quick way to make sure our view worked
-    # test_user = User(first_name='Kadeem', last_name='Best')
-    # db.session.add(test_user)
-    # db.session.commit()
-
     return render_template("users.html", users=User.query.all())
 
 @app.get("/add-user")
@@ -32,6 +27,40 @@ def add_user():
     return render_template("add-user.html")
 
 
+@app.post("/add-new-user")
+def add_new_user():
+    """ Add new user and route to homepage """
+
+    first_name = request.form["firstName"]
+    last_name = request.form["lastName"]
+    img_url = request.form["image"]
+
+    #TODO: make sure all these fields exist b4 image url
+
+    new_user = User(
+            first_name=first_name,
+            last_name=last_name
+        )
+    if img_url:
+        new_user.image_url=img_url
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    return redirect("/")
 
 
 
+
+
+    # if img_url:
+    #     new_user = User(
+    #         first_name=first_name,
+    #         last_name=last_name,
+    #         image_url=img_url
+    #     )
+    # else:
+    #     new_user = User(
+    #         first_name=first_name,
+    #         last_name=last_name
+    #     )

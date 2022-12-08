@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %} User Detail {% endblock title %}
+
+{% block content %}
+
+<h1> {{ user.first_name }} {{ user.last_name }}</h1>
+<a class="btn btn-primary" href="/edit-user/{{user.id}}">Edit</a>
+<a class="btn btn-danger" href="/delete/{{user.id}}">Delete</a>
+
+{% endblock content %}
