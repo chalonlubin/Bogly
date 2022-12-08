@@ -67,3 +67,33 @@ class UserViewTestCase(TestCase):
             html = resp.get_data(as_text=True)
             self.assertIn("test1_first", html)
             self.assertIn("test1_last", html)
+
+    def test_user_profile(self):
+        with self.client as c:
+            resp = c.get(f"/users/{self.user_id}")
+            self.assertEqual(resp.status_code, 200)
+            html = resp.get_data(as_text=True)
+            self.assertIn("test1_first", html)
+            self.assertIn("test1_last", html)
+
+    def test_delete_user(self):
+        with self.client as c:
+            resp = c.post(f"/users/{self.user_id}/delete")
+            self.assertEqual(resp.status_code, 302)
+
+
+    def test_delete_redirect(self):
+        with self.client as c:
+            resp = c.post(f"/users/{self.user_id}/delete", follow_redirects=True)
+            self.assertEqual(resp.status_code, 200)
+            html = resp.get_data(as_text=True)
+
+            self.assertNotIn("test1_first", html)
+            self.assertNotIn("test1_last", html)
+
+            user = User.query.filter(User.id == self.user_id).first()
+
+            self.assertEqual(user, None)
+
+
+

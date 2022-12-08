@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-DEFAULT_IMAGE = 'https://ichef.bbci.co.uk/news/976/cpsprodpb/3497/production/_108636431_one.jpg.webp'
+DEFAULT_IMAGE_URL = 'https://ichef.bbci.co.uk/news/976/cpsprodpb/3497/production/_108636431_one.jpg.webp'
 
 def connect_db(app):
     """Connect to database."""
@@ -23,4 +23,4 @@ class User(db.Model):
     first_name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
     image_url = db.Column(db.Text, nullable=True,
-                          default=DEFAULT_IMAGE)
+                          default=DEFAULT_IMAGE_URL)
