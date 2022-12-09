@@ -2,8 +2,6 @@
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
-from datetime import datetime
-
 DEFAULT_IMAGE_URL = 'https://ichef.bbci.co.uk/news/976/cpsprodpb/3497/production/_108636431_one.jpg.webp'
 
 def connect_db(app):
@@ -52,18 +50,20 @@ class Post(db.Model):
     # [SQL: INSERT INTO posts (title, content, created_at, user_id) VALUES (%(title)s, %(content)s, %(created_at)s, %(user_id)s) RETURNING posts.id]
     # [parameters: {'title': 'My first post', 'content': 'Hello', 'created_at': <sqlalchemy.sql.functions.now at 0x7fcb78a8d840; now>, 'user_id': 1}]
     # (Background on this error at: https://sqlalche.me/e/14/f405)
-    # created_at = db.Column(
-    #     db.DateTime,
-    #     nullable=False,
-    #     default=db.func.now())
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(
+        db.DateTime,
+        nullable=False,
+        default=db.func.now())
     user_id = db.Column(
         db.Integer,
-        db.ForeignKey('users.id'))
+        db.ForeignKey('users.id'),
+        nullable=False)
 
     # post instance .author --> user
     author = db.relationship(
         "User",
         backref='posts')
 
+    def __repr__(self):
+        return f"<Post User={self.author.first_name} {self.author.last_name} id={self.id}>"
 

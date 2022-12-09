@@ -75,6 +75,48 @@ def user_detail_view(id):
     return render_template("user-detail.html", user=user)
 
 
+@app.get("/posts/<int:id>")
+def user_post_detail_view(id):
+    """ Show information about the given user. """
+    post = Post.query.get_or_404(id)
+    return render_template("post-detail.html", post=post)
+
+@app.get("/posts/<int:id>/edit")
+def edit_user_post_view(id):
+    """Show page allowing user to edit post."""
+    post = Post.query.get_or_404(id)
+
+    return render_template("edit-post.html", post=post)
+
+@app.post("/posts/<int:id>/edit")
+def edit_post(id):
+    """Edit posts."""
+
+    post = Post.query.get_or_404(id)
+
+    title = request.form["title"]
+    content = request.form["content"]
+
+    post.title = title
+    post.content = content
+
+    db.session.add(post)
+    db.session.commit()
+
+    return redirect(f"/posts/{post.id}")
+
+@app.post("/posts/<int:id>/delete")
+def delete_post(id):
+    """Delete posts."""
+
+    post = Post.query.get_or_404(id)
+    author_id = post.author.id
+
+    db.session.delete(post)
+    db.session.commit()
+
+    return redirect(f"/users/{author_id}" )
+
 @app.route("/users/<id>/edit", methods=['GET', 'POST'])
 def edit_user(id):
     """ Process the edit form, returning the user to the /users page. """
@@ -132,3 +174,5 @@ def add_post(id):
 
     else:
         return render_template("add-post.html", user=user)
+
+
